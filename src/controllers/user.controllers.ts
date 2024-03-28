@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
-import UserModel from "../models/user.model";
-import MovieModel from "../models/movie.model";
+import prisma from "../db/client";
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const allUsers = await UserModel.find({}).populate("movies");
+    const allUsers = await prisma.user.findMany({
+      include:{
+        movies: true
+      }
+    });
     res.status(200).send(allUsers);
   } catch (error) {
     res.status(400).send(error);
@@ -14,7 +17,9 @@ export const getAllUsers = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   const { name, email, password } = req.body;
   try {
-    const newUser = await UserModel.create({ name, email, password });
+    const newUser = await prisma.user.create({
+      data: {name, email, password}
+    });
     res.status(201).send(newUser);
   } catch (error) {
     res.status(400).send(error);
@@ -26,7 +31,10 @@ export const updateUser = async(req: Request, res: Response) => {
     const {userID} = req.params
 
     try{
-        const userUpdated = await UserModel.findByIdAndUpdate({_id:userID},{name, email, password},{new:true})
+        const userUpdated = await prisma.user.update({
+          where:{id:userID},
+          data:{name, email, password}
+        })
         res.status(201).send(userUpdated)
     }catch(error){
         res.status(400).send(error)
@@ -36,10 +44,9 @@ export const updateUser = async(req: Request, res: Response) => {
 export const deleteUser = async(req: Request, res: Response) => {
     const {userID} = req.params
     try{
-        const userDeleted = await UserModel.findByIdAndDelete({_id:userID})
-        const userMoviesID = await userDeleted?.movies
-        console.log("usermovies", userMoviesID)
-        await MovieModel.deleteMany({_id: {$in: userMoviesID}})
+        const userDeleted = await prisma.user.delete({
+          where:{id:userID}
+        })
         res.status(201).send(userDeleted)
     }catch(error){
         res.status(400).send(error)
