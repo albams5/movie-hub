@@ -5,7 +5,7 @@ import GenreModel from "../models/genre.model"
 
 export const getAllMovies = async (req: Request, res: Response) => {
   try {
-    const allMovies = await MovieModel.find({});
+    const allMovies = await MovieModel.find({}).populate("genre");
     res.status(201).send(allMovies);
   } catch (error) {
     res.status(400).send(error);

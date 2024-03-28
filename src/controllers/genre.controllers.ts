@@ -27,7 +27,7 @@ export const createGenre = async(req:Request, res: Response) => {
 
 export const updateGenre = async(req:Request, res: Response) => {
     const {name} = req.body
-    const genreID = req.params
+    const {genreID} = req.params
     try{
         const genreUpdated = await GenreModel.findByIdAndUpdate({_id:genreID}, {name}, {new:true})
         res.status(201).send(genreUpdated)

@@ -14,6 +14,6 @@ const genreSchema = new Schema<IGenreModel> ({
     }
 },{timestamps: true})
 
-const MovieModel = model<IGenreModel>("Genre", genreSchema)
+const GenreModel = model<IGenreModel>("Genre", genreSchema)
 
-export default MovieModel
+export default GenreModel
