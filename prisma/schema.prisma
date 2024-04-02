@@ -28,16 +28,16 @@ model Movie {
   name     String
   image    String
   score    Int
-  genre    Genre[]
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
   userId   String   @db.ObjectId
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  genre    Genre[]
 }
 
 model Genre {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String @unique
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
   movieId String @db.ObjectId
-  movie Movie @relation(fields: [movieId], references: [id])
+  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
 }

@@ -1,4 +1,4 @@
-import express, { Request, Response, Express } from 'express'
+import express, { Express } from 'express'
 import userRoutes from './routes/user.routes';
 import movieRoutes from './routes/movie.routes';
 import genreRoutes from './routes/genre.routes';
