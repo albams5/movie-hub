@@ -1,4 +1,4 @@
-import express, { Request, Response, Express } from 'express'
+import express, { Express } from 'express'
 import userRoutes from './routes/user.routes';
 import movieRoutes from './routes/movie.routes';
 import genreRoutes from './routes/genre.routes';
@@ -8,7 +8,7 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 
 app.use(helmet())
-app.use(express.json()) 
+app.use(express.json())
 app.use(morgan('tiny'))
 
 

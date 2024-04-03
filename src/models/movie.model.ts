@@ -12,7 +12,6 @@ interface IMovieModel {
 const movieSchema = new Schema<IMovieModel> ({
     name:{
         type: String,
-        unique: true,
         required: true
     },
     image:{

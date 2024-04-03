@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UserModel from "../models/user.model";
 import MovieModel from "../models/movie.model";
+import GenreModel from "../models/genre.model";
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
@@ -38,8 +39,8 @@ export const deleteUser = async(req: Request, res: Response) => {
     try{
         const userDeleted = await UserModel.findByIdAndDelete({_id:userID})
         const userMoviesID = await userDeleted?.movies
-        console.log("usermovies", userMoviesID)
         await MovieModel.deleteMany({_id: {$in: userMoviesID}})
+        // await GenreModel.deleteMany({_id: {$in: }})
         res.status(201).send(userDeleted)
     }catch(error){
         res.status(400).send(error)

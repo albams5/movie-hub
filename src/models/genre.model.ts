@@ -9,7 +9,6 @@ interface IGenreModel {
 const genreSchema = new Schema<IGenreModel> ({
     name:{
         type: String,
-        unique: true,
         required: true
     }
 },{timestamps: true})
