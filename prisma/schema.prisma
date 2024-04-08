@@ -30,14 +30,27 @@ model Movie {
   score    Int
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
-  userId   String   @db.ObjectId
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  genre    Genre[]
+  userID   String   @db.ObjectId
+  user     User     @relation(fields: [userID], references: [id], onDelete: Cascade)
+  genre    MovieGenre[]
 }
 
 model Genre {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   name    String
-  movieId String @db.ObjectId
-  movie   Movie  @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  movie   MovieGenre[]
+}
+
+model MovieGenre {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  movieID   String   @db.ObjectId
+  movie     Movie    @relation(fields: [movieID], references: [id])
+  genreID   String   @db.ObjectId
+  genre     Genre    @relation(fields: [genreID], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([movieID, genreID])
 }

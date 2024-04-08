@@ -11,10 +11,9 @@ export const getAllGenres = async(req:Request, res: Response) => {
 }
 export const createGenre = async(req:Request, res: Response) => {
     const {name} = req.body
-    const {movieID} = req.params
     try{
         const newGenre = await prisma.genre.create({
-            data: {name, movie: {connect: {id:movieID}}}
+            data: {name}
         })
         res.status(201).send(newGenre)
     }catch(error){
