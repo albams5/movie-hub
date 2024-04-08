@@ -42,7 +42,7 @@ export const createMovie = async (req: Request, res: Response) => {
       if (genre && genre.length > 0) {
         const createGenre = genre.map((genreID: number) => ({
           movieID: movie.id,
-          genreID: genre.id,
+          genreID: genreID,
         }));
         await prisma.movieGenre.createMany({
           data: createGenre,
