@@ -8,7 +8,11 @@ export const getAllMovies = async (req: Request, res: Response) => {
         genre: true
       }
     });
-    res.status(201).send(allMovies);
+    res.status(201).send({
+      msg: "All movies",
+      data: allMovies,
+      type: typeof allMovies
+    });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -33,12 +37,12 @@ export const createMovie = async (req: Request, res: Response) => {
   try {
     const newMovie = await prisma.$transaction(async (prisma) => {
       const movie = await prisma.movie.create({
-        data: {name, image, score, userID}
+        data: {name, image, score, genre, userID}
       })
       if(genre && genre.length > 0){
         const createGenre = genre.map((genreID: number) => ({
           movieID: movie.id,
-          genreID: genreID
+          genreID: genre.id
         }))
         await prisma.genreOnMovies.createMany({
           data: createGenre

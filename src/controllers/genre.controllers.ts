@@ -15,7 +15,6 @@ export const getAllGenres = async (req: Request, res: Response) => {
 };
 export const createGenre = async (req: Request, res: Response) => {
   const { name } = req.body;
-  const userID = parseInt(req.params.userID);
 
   if (!name) {
     return res.status(400).send({ message: "The field name is required" });
