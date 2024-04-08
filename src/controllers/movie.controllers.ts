@@ -37,7 +37,7 @@ export const createMovie = async (req: Request, res: Response) => {
   try {
     const newMovie = await prisma.$transaction(async (prisma) => {
       const movie = await prisma.movie.create({
-        data: { name, image, score, genre, userID },
+        data: { name, image, score, userID },
       });
       if (genre && genre.length > 0) {
         const createGenre = genre.map((genreID: number) => ({
