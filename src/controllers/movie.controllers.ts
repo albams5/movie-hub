@@ -178,14 +178,7 @@ export const deleteMovie = async (req: Request, res: Response) => {
         },
       });
 
-      return prisma.movie.findUnique({
-        where: {
-          id: movieID,
-        },
-        include: {
-          genre: true,
-        },
-      });
+      return deletedMovie;
     });
     res.status(201).send({
       message: "Movie deleted successfully",

@@ -99,18 +99,13 @@ export const deleteUser = async(req: Request, res: Response) => {
           })
         }
 
-        const genreOnMoviesToDelete = user.movies.flatMap((movie) =>
-          movie.genre.map((genre) => ({
-            movieID: movie.id,
-            genreID: genre.id
-          }))
-        )
-
-        await prisma.movieGenre.deleteMany({
-          where: {
-            OR: genreOnMoviesToDelete,
-          }
-        })
+        for(const movie of user.movies){
+          await prisma.movieGenre.deleteMany({
+            where: {
+              movieID: movie.id,
+            },
+          });
+        }
 
         const deletedMovies = await prisma.movie.deleteMany({
           where: {
