@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import {
   createGenre,
   deleteGenre,
@@ -10,7 +10,7 @@ const genreRoutes: Router = Router();
 
 genreRoutes.get("/", getAllGenres);
 
-genreRoutes.post("/:movieID", createGenre);
+genreRoutes.post("/", createGenre);
 
 genreRoutes.patch("/:genreID", updateGenre);
 

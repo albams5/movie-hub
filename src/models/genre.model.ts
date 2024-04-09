@@ -9,7 +9,13 @@ interface IGenreModel {
 const genreSchema = new Schema<IGenreModel> ({
     name:{
         type: String,
-        required: true
+        required: true,
+        movies: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Movie"
+            }
+        ]
     }
 },{timestamps: true})
 
