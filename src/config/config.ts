@@ -6,7 +6,8 @@ type TConfig = {
 
 type EnvironmentConfig = {
     app: AppConfig,
-    db: DBConfig
+    db: DBConfig,
+    auth0: auth0Config
 }
 
 type AppConfig = {
@@ -15,6 +16,12 @@ type AppConfig = {
 
 type DBConfig = {
     URI: string
+}
+
+type auth0Config = {
+    client_origin: string | undefined,
+    audience: string | undefined,
+    issuer: string | undefined
 }
 
 if(process.env.NODE_ENV === 'production'){
@@ -32,6 +39,11 @@ const CONFIG:TConfig = {
         },
         db: {
             URI: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mobee"
+        },
+        auth0: {
+            client_origin: process.env.APP_ORIGIN,
+            audience: process.env.AUTH0_AUDIENCE,
+            issuer: process.env.AUTH0_ISSUER
         }
     },
     production: {
@@ -40,8 +52,17 @@ const CONFIG:TConfig = {
         },
         db: {
             URI: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mobee"
+        },
+        auth0: {
+            client_origin: process.env.APP_ORIGIN,
+            audience: process.env.AUTH0_AUDIENCE,
+            issuer: process.env.AUTH0_ISSUER
         }
     }
 }
+
+export const CLOUDINARY_CLOUD_NAME = process.env['CLOUDINARY_CLOUD_NAME']
+export const CLOUDINARY_API_KEY = process.env['CLOUDINARY_API_KEY']
+export const CLOUDINARY_API_SECRET = process.env['CLOUDINARY_API_SECRET']
 
 export default CONFIG[ENV]

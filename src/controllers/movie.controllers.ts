@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import prisma from "../db/client";
+// import { uploadImage } from "../utils/cloudinary";
 
 export const getAllMovies = async (req: Request, res: Response) => {
+  console.log("dentro de controlador movies")
   try {
     const allMovies = await prisma.movie.findMany({
       include:{
@@ -19,8 +21,10 @@ export const getAllMovies = async (req: Request, res: Response) => {
 };
 
 export const createMovie = async (req: Request, res: Response) => {
-  const { name, image, score, genre } = req.body;
+  const { name, score, image, genre } = req.body;
   const  userID  = parseInt(req.params.userID);
+  // const image = req.file?.buffer.toString("base64")
+
 
   if(!name || !image || !score || !genre){
     return res.status(400).send({
@@ -39,7 +43,8 @@ export const createMovie = async (req: Request, res: Response) => {
       const movie = await prisma.movie.create({
         data: {name, image, score, userID}
       })
-      if(genre && genre.length > 0){
+
+      if(genre && genre.length){
         const createGenre = genre.map((genreID: number) => ({
           movieID: movie.id,
           genreID: genreID

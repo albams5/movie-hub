@@ -5,10 +5,11 @@ import {
   getAllUsers,
   updateUser,
 } from "../controllers/user.controllers";
+ import { checkJwtMiddleware } from "../middlewares/checkJwt_middleware";
 
 const userRoutes: Router = Router();
 
-userRoutes.get("/", getAllUsers);
+userRoutes.get("/", checkJwtMiddleware, getAllUsers);
 
 userRoutes.post("/", createUser);
 
