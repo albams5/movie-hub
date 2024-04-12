@@ -1,4 +1,4 @@
-# 🐝Mobee Backend
+# 🐝Mobee API - Movie Hub
 
 ## Table of contents
 
