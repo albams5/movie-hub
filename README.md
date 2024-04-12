@@ -2,11 +2,11 @@
 
 ## Table of contents
 
-💻About the project
-📚Branches
-⚙️Technologies Used
-📍Data Types
-📝Daily records
+💻About the project <br>
+📚Branches <br>
+⚙️Technologies Used <br>
+📍Data Types <br>
+📝Daily records <br>
 
 ## 💻About the project
 
