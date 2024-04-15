@@ -6,17 +6,19 @@ import {
   updateMovie,
 } from "../controllers/movie.controllers";
 import { checkJwtMiddleware } from "../middlewares/checkJwt_middleware";
-import multer from 'multer'
+import multerCloudinaryConnect from '../utils/multer-cloudinary'
 
 const movieRoutes: Router = Router();
 
-const upload = multer({dest: 'uploads/'})
+// const upload = multer({dest: 'uploads/'})
 
-movieRoutes.get("/", checkJwtMiddleware, getAllMovies);
+movieRoutes.get("/", 
+// checkJwtMiddleware, 
+getAllMovies);
 
-movieRoutes.post("/:userID", upload.single("image"), createMovie);
+movieRoutes.post("/:userID", multerCloudinaryConnect.single("image"), createMovie);
 
-movieRoutes.patch("/:movieID", updateMovie);
+movieRoutes.patch("/:movieID", multerCloudinaryConnect.single("image"), updateMovie);
 
 movieRoutes.delete("/:movieID", deleteMovie);
 

@@ -17,7 +17,7 @@ const helmet = require('helmet')
 
 app.use(helmet())
 app.use(express.json())
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(morgan('tiny'))
 
@@ -33,10 +33,10 @@ app.use(errorHandler)
 
 app.use("/public", requestRouter)
 
-app.use(fileUpload({
-    useTempFiles: true,
-    tempFileDir: './uploads'
-}))
+// app.use(fileUpload({
+//     useTempFiles: true,
+//     tempFileDir: './uploads'
+// }))
 
 export default app
 

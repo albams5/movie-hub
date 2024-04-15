@@ -1,16 +1,49 @@
-import {v2 as cloudinary} from 'cloudinary'
+import cloudinary from "../services/cloudinary/config";
 
-import {CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET} from '../config/config'
+export function getPublicId(url: any) {
+	const splitUrl = url.split("/");
+	const concatUrlLastTwoPositions = splitUrl.splice(7).join("/");
+	const publicId = concatUrlLastTwoPositions.split(".")[0];
+	// console.log({ splitUrl });
+	// console.log({ concatUrlLastTwoPositions });
+	// console.log({ publicId });
+	return publicId;
+}
 
-cloudinary.config({
-    cloud_name: CLOUDINARY_CLOUD_NAME,
-    api_key: CLOUDINARY_API_KEY,
-    api_secret: CLOUDINARY_API_SECRET,
-    secure: true
-})
+export async function uploadImageToCloudinary(image: any) {
+	console.log("entro en uploadImageToCloudinary");
 
-export async function uploadImage(filePath:any){
-   return await cloudinary.uploader.upload(filePath, {
-    folder: "mobee"
-   })
+	const fileName = image?.originalname;
+	// console.log({ fileName });
+
+	const fileNameWithoutExtension = fileName?.split(".")[0];
+	console.log({ fileNameWithoutExtension });
+
+	const uploadImageToCloudinary = await cloudinary.uploader.upload(image, {
+		folder: "movies",
+		public_id: "movie_hub" + fileNameWithoutExtension + "-" + Date.now(),
+	});
+
+	if (!uploadImageToCloudinary) {
+		return "Sync error with cloudinary. The image wasn't uploaded";
+	}
+	console.log({ uploadImageToCloudinary });
+
+	return uploadImageToCloudinary.secure_url;
+}
+
+export async function deleteImageFromCloudinary(publicId: any) {
+	try {
+		const destroyImageAtCloudinary = await cloudinary.uploader.destroy(
+			publicId
+		);
+		if (destroyImageAtCloudinary.result === "not found") {
+			return `The image wasn't found in cloudinary`;
+		}
+		if (destroyImageAtCloudinary.result === "ok") {
+			return `Image deleted successfully`;
+		}
+	} catch (error) {
+		return `Error deleting image: ${error}`;
+	}
 }
