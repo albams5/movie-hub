@@ -46,9 +46,6 @@ const {
     CLOUDINARY_API_SECRET
 } = process.env
 
-// console.log({CLOUDINARY_CLOUD_NAME})
-// console.log({CLOUDINARY_API_KEY})
-// console.log({CLOUDINARY_API_SECRET})
 
 
 
