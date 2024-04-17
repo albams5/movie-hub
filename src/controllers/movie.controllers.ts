@@ -41,7 +41,7 @@ export const createMovie = async (req: Request, res: Response) => {
     });
   }
 
-  const imageUploadedToCloudinary = uploadImageToCloudinary(image);
+  const imageUploadedToCloudinary = await uploadImageToCloudinary(image);
 
 
   try {
@@ -51,7 +51,7 @@ export const createMovie = async (req: Request, res: Response) => {
       const movie = await prisma.movie.create({
         data: {
           name,
-          image: await imageUploadedToCloudinary,
+          image: imageUploadedToCloudinary,
           score,
           userID,
         },
@@ -90,7 +90,11 @@ export const createMovie = async (req: Request, res: Response) => {
 };
 
 export const updateMovie = async (req: Request, res: Response) => {
-  const { name, score, genre } = req.body;
+  let { name, score, genre } = req.body;
+  console.log(name, score, genre)
+  const scoreToNumber = parseInt(score);
+  score = scoreToNumber;
+
   const image = req.file?.path;
   // const image = imageWithoutString?.toString();
   const movieID = parseInt(req.params.movieID);
@@ -101,6 +105,9 @@ export const updateMovie = async (req: Request, res: Response) => {
       message: "The field movieID is required",
     });
   }
+
+  const imageUploadedToCloudinary = await uploadImageToCloudinary(image);
+  console.log({imageUploadedToCloudinary})
 
   try {
     const movie = await prisma.movie.findUnique({
@@ -118,26 +125,28 @@ export const updateMovie = async (req: Request, res: Response) => {
       });
     }
 
+
     const updatedMovie = await prisma.$transaction(async (prisma) => {
       const updatedMovie = await prisma.movie.update({
         where: {
           id: movieID,
         },
         data: {
-          name: name !== undefined ? name : movie.name,
-          image: image !== undefined ? await uploadImageToCloudinary(image) : movie.image,
-          score: score !== undefined ? parseInt(score) : movie.score,
+          name,
+          image: imageUploadedToCloudinary,
+          score,
         },
       });
 
       if (genre && genre.length > 0) {
+        const genreArray = JSON.parse(genre);
         await prisma.genreOnMovies.deleteMany({
           where: {
             movieID: movieID,
           },
         });
 
-        const createGenre = genre.map((genreID: number) => ({
+        const createGenre = genreArray.map((genreID: number) => ({
           movieID: movieID,
           genreID: genreID,
         }));
@@ -174,49 +183,52 @@ export const deleteMovie = async (req: Request, res: Response) => {
       message: "The field movieID is required",
     });
   }
-
   try {
     const movie = await prisma.movie.findUnique({
       where: {
-        id: movieID,
+        id: movieID
       },
       include: {
-        genre: true,
-      },
+        genre: true
+      }
     });
 
     if (!movie) {
       return res.status(404).send({
-        message: "Movie not found",
+        message: "Movie not found"
       });
     }
-    console.log({movie})
-    deleteImageFromCloudinary(getPublicId(movie?.image))
 
-    const deletedMovie = await prisma.$transaction(async (prisma) => {
+    console.log("el public id", getPublicId(movie.image))
 
-        const deletedMovie = await prisma.movie.delete({
-          where: {
-            id: movieID,
-          },
-        });
+  await deleteImageFromCloudinary(getPublicId(movie?.image))
 
-        return prisma.movie.findUnique({
-          where: {
-            id: movieID,
-          },
-          include: {
-            genre: true,
-          },
-        });
-      
+  const deletedMovie = await prisma.$transaction(async (prisma) => {
+    await prisma.genreOnMovies.deleteMany({
+      where: {
+        movieID: movieID
+      }
     });
-
-    res.status(200).send({
-      message: "Movie deleted successfully",
-      data: deletedMovie,
+    const deletedMovie = await prisma.movie.delete({
+      where: {
+        id: movieID
+      }
     });
-  } catch (error) {
-    res.status(400).send(error);
-  }
+    return prisma.movie.findUnique({
+      where: {
+        id: movieID
+      },
+      include: {
+        genre: true
+      }
+    });
+  });
+
+  res.status(200).send({
+    message: "Movie deleted successfully",
+    data: deletedMovie
+  });
+} catch (error) {
+  res.status(400).send(error);
+}
 };

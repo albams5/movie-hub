@@ -6,10 +6,8 @@ const storage = new CloudinaryStorage({
 	cloudinary: cloudinary,
 });
 
-console.log("storage", storage)
 
 const filter = (req: any, file: any, cb: any) => {
-  // console.log("dentro de filter")
 	if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
 		return cb(
 			new Error("Only images with jpg, jpeg, png, or gif formats are allowed"),
@@ -27,6 +25,5 @@ const multerCloudinaryImage = multer({
 	},
 })
 
-// console.log("multerCloudinaryImage", multerCloudinaryImage);
 
 export default multerCloudinaryImage;
