@@ -32,6 +32,7 @@ You can switch between branches to see how the connection with the database is i
 - [Prisma](https://www.prisma.io/)
 - [Morgan](https://github.com/expressjs/morgan)
 - [Helmet](https://helmetjs.github.io/)
+- [Cloudinary](https://cloudinary.com/documentation)
 
 ## 📍Data Types
 
@@ -54,6 +55,8 @@ The Mobee application handles three main collections or entities:
     - Day 5: add Movies-Genres relationship in prisma branch.
 
     - Day 6: add Movies-Genres relationship in prisma_with_postgres branch.
+    
+    - Day 7-8-9: Cloudinary implementation
 
 
 
