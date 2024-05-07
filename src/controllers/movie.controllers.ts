@@ -22,16 +22,16 @@ export const getAllMovies = async (req: Request, res: Response) => {
 
 export const createMovie = async (req: Request, res: Response) => {
   console.log("dentro de create movie")
-  let { name, score, genre } = req.body;
+  let { name, score, genre, sinopsis } = req.body;
   const scoreToNumber = parseInt(score);
   score = scoreToNumber;
   const userID = parseInt(req.params.userID);
   const image = req.file?.path;
   console.log({ image });
 
-  if (!name || !image || !score || !genre) {
+  if (!name || !image || !score || !genre || !sinopsis) {
     return res.status(400).send({
-      message: "The fields name, image, score and genre are required",
+      message: "The fields name, image, score, sinopsis and genre are required",
     });
   }
 
@@ -47,13 +47,14 @@ export const createMovie = async (req: Request, res: Response) => {
   try {
     const newMovie = await prisma.$transaction(async (prisma) => {
       console.log("dentro de transaction");
-      console.log({ name, image, score, genre, userID });
+      console.log({ name, image, score, genre, userID, sinopsis });
       const movie = await prisma.movie.create({
         data: {
           name,
           image: imageUploadedToCloudinary,
           score,
           userID,
+          sinopsis
         },
       });
       console.log({ movie });
@@ -90,7 +91,7 @@ export const createMovie = async (req: Request, res: Response) => {
 };
 
 export const updateMovie = async (req: Request, res: Response) => {
-  let { name, score, genre } = req.body;
+  let { name, score, genre, sinopsis } = req.body;
   console.log(name, score, genre)
   const scoreToNumber = parseInt(score);
   score = scoreToNumber;
@@ -135,6 +136,7 @@ export const updateMovie = async (req: Request, res: Response) => {
           name,
           image: imageUploadedToCloudinary,
           score,
+          sinopsis
         },
       });
 

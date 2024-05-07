@@ -24,11 +24,11 @@ model User {
 }
 
 model Movie {
-  id       Int             @id @default(autoincrement())
-  name     String          @db.VarChar(255)
-  image   String          @db.VarChar(255)
-  
+  id    Int    @id @default(autoincrement())
+  name  String @db.VarChar(255)
+  image String @db.VarChar(255)
   score    Int
+  sinopsis String          @db.VarChar(1000) @default("sinopsis")
   createAt DateTime        @default(now())
   updateAt DateTime        @updatedAt
   userID   Int
@@ -38,7 +38,7 @@ model Movie {
 
 model Genre {
   id       Int             @id @default(autoincrement())
-  name     String          @db.VarChar(255) @unique
+  name     String          @unique @db.VarChar(255)
   createAt DateTime        @default(now())
   updateAt DateTime        @updatedAt
   movies   GenreOnMovies[]
