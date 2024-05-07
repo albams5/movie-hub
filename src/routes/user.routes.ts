@@ -9,7 +9,9 @@ import {
 
 const userRoutes: Router = Router();
 
-userRoutes.get("/", checkJwtMiddleware, getAllUsers);
+userRoutes.get("/", 
+// checkJwtMiddleware, 
+getAllUsers);
 
 userRoutes.post("/", createUser);
 

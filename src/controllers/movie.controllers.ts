@@ -225,8 +225,7 @@ export const deleteMovie = async (req: Request, res: Response) => {
   });
 
   res.status(200).send({
-    message: "Movie deleted successfully",
-    data: deletedMovie
+    message: "Movie deleted successfully"
   });
 } catch (error) {
   res.status(400).send(error);

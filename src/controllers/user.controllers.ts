@@ -125,11 +125,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     });
 
     res.status(200).send({
-      message: "User deleted successfully",
-      data: {
-        deletedUser,
-        deletedMovies,
-      },
+      message: "User deleted successfully"
     });
   } catch (error) {
     res.status(400).send(error);

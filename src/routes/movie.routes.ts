@@ -13,7 +13,7 @@ const movieRoutes: Router = Router();
 // const upload = multer({dest: 'uploads/'})
 
 movieRoutes.get("/", 
-// checkJwtMiddleware, 
+checkJwtMiddleware, 
 getAllMovies);
 
 movieRoutes.post("/:userID", multerCloudinaryConnect.single("image"), createMovie);

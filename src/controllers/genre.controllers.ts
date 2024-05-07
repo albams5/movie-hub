@@ -13,6 +13,26 @@ export const getAllGenres = async (req: Request, res: Response) => {
     res.status(400).send(error);
   }
 };
+
+export const getGenre = async (req: Request, res: Response) => {
+  const genreID = parseInt(req.params.genreID)
+console.log(genreID)
+  try {
+    const genre = await prisma.genre.findUnique({
+      where: {
+        id: genreID
+      }
+    });
+    res.status(200).send({
+      msg: "Selected genre",
+      data: genre,
+      type: typeof genre,
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 export const createGenre = async (req: Request, res: Response) => {
   const { name } = req.body;
 
@@ -100,8 +120,7 @@ export const deleteGenre = async (req: Request, res: Response) => {
     });
 
     res.status(200).send({
-      message: "Genre deleted successfully",
-      data: deletedGenre,
+      message: "Genre deleted successfully"
     });
   } catch (error) {
     res.status(400).send(error);
