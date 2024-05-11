@@ -13,6 +13,27 @@ export const getAllGenres = async (req: Request, res: Response) => {
     res.status(400).send(error);
   }
 };
+
+export const getGenre = async (req: Request, res: Response) => {
+  const genreID = parseInt(req.params.genreID);
+  console.log({genreID})
+  try {
+    const uniqueGenre = await prisma.genre.findUnique({
+      where: {
+        id: genreID,
+      },
+  });
+    res.status(200).send({
+      msg: "Selected genre",
+      data: uniqueGenre,
+      type: "array",
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+
 export const createGenre = async (req: Request, res: Response) => {
   const { name } = req.body;
 

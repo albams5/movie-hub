@@ -3,6 +3,7 @@ import {
   createMovie,
   deleteMovie,
   getAllMovies,
+  getMovie,
   updateMovie,
 } from "../controllers/movie.controllers";
 import { checkJwtMiddleware } from "../middlewares/checkJwt_middleware";
@@ -13,8 +14,10 @@ const movieRoutes: Router = Router();
 // const upload = multer({dest: 'uploads/'})
 
 movieRoutes.get("/", 
-// checkJwtMiddleware, 
+//  checkJwtMiddleware, 
 getAllMovies);
+
+movieRoutes.get("/:movieID", getMovie)
 
 movieRoutes.post("/:userID", multerCloudinaryConnect.single("image"), createMovie);
 

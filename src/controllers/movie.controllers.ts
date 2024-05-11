@@ -20,6 +20,29 @@ export const getAllMovies = async (req: Request, res: Response) => {
   }
 };
 
+export const getMovie = async (req: Request, res: Response) => {
+  const movieID = parseInt(req.params.movieID);
+  console.log({movieID})
+  try {
+    const uniqueMovie = await prisma.movie.findUnique({
+      where: {
+        id: movieID,
+      },
+      include: {
+        genre: true
+      }
+  });
+  console.log({uniqueMovie})
+    res.status(200).send({
+      msg: "Selected genre",
+      data: uniqueMovie,
+      type: "array",
+    });
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
 export const createMovie = async (req: Request, res: Response) => {
   console.log("dentro de create movie")
   let { name, score, genre, sinopsis } = req.body;
