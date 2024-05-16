@@ -6,24 +6,27 @@ import { checkJwtMiddleware } from './middlewares/checkJwt_middleware';
 import cors from 'cors'
 import errorHandler from './middlewares/error.middleware';
 import { requestRouter } from './routes/requests.routes';
-import fileUpload from 'express-fileupload'
-import bodyParser from 'body-parser';
+// import fileUpload from 'express-fileupload'
+import { json, urlencoded } from 'body-parser';
+import helmet from 'helmet';
+import morgan from 'morgan';
 
 
 
 const app: Express = express();
-const morgan = require('morgan')
-const helmet = require('helmet')
+
 
 app.use(helmet())
-app.use(express.json())
-// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(express.json())
+app.use(json())
+app.use(urlencoded({ extended: true }));
 
 app.use(morgan('tiny'))
 
 app.use(cors({
-    origin: "http://localhost:3000"
-}))
+    origin: 'http://localhost:3000',
+    credentials: true
+  }));
 
 
 app.use("/user", userRoutes)

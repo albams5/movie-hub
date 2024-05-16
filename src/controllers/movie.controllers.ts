@@ -3,7 +3,6 @@ import prisma from "../db/client";
 import { deleteImageFromCloudinary, getPublicId, uploadImageToCloudinary } from "../utils/cloudinary";
 
 export const getAllMovies = async (req: Request, res: Response) => {
-  console.log("dentro de controlador movies");
   try {
     const allMovies = await prisma.movie.findMany({
       include: {
@@ -22,7 +21,6 @@ export const getAllMovies = async (req: Request, res: Response) => {
 
 export const getMovie = async (req: Request, res: Response) => {
   const movieID = parseInt(req.params.movieID);
-  console.log({movieID})
   try {
     const uniqueMovie = await prisma.movie.findUnique({
       where: {
@@ -32,7 +30,6 @@ export const getMovie = async (req: Request, res: Response) => {
         genre: true
       }
   });
-  console.log({uniqueMovie})
     res.status(200).send({
       msg: "Selected genre",
       data: uniqueMovie,
@@ -46,11 +43,13 @@ export const getMovie = async (req: Request, res: Response) => {
 export const createMovie = async (req: Request, res: Response) => {
   console.log("dentro de create movie")
   let { name, score, genre, sinopsis } = req.body;
+  console.log(name, score, genre, sinopsis)
+  console.log(req.file)
   const scoreToNumber = parseInt(score);
   score = scoreToNumber;
   const userID = parseInt(req.params.userID);
   const image = req.file?.path;
-  console.log({ image });
+  console.log("este es el import", { image });
 
   if (!name || !image || !score || !genre || !sinopsis) {
     return res.status(400).send({
@@ -66,8 +65,8 @@ export const createMovie = async (req: Request, res: Response) => {
 
   const imageUploadedToCloudinary = await uploadImageToCloudinary(image);
 
-
   try {
+    console.log("dentro del try")
     const newMovie = await prisma.$transaction(async (prisma) => {
       console.log("dentro de transaction");
       console.log({ name, image, score, genre, userID, sinopsis });
@@ -83,7 +82,8 @@ export const createMovie = async (req: Request, res: Response) => {
       console.log({ movie });
 
       if (genre && genre.length) {
-        const genreArray = JSON.parse(genre);
+        console.log("dentro del if del genre")
+        const genreArray = genre.split(',').map(Number);
         console.log({ genreArray });
         const createGenre = genreArray.map((genreID: number) => ({
           movieID: movie.id,
