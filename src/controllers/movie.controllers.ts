@@ -115,7 +115,7 @@ export const createMovie = async (req: Request, res: Response) => {
 
 export const updateMovie = async (req: Request, res: Response) => {
   let { name, score, genre, sinopsis } = req.body;
-  console.log(name, score, genre)
+  console.log(name, score, genre, sinopsis)
   const scoreToNumber = parseInt(score);
   score = scoreToNumber;
 
@@ -134,6 +134,7 @@ export const updateMovie = async (req: Request, res: Response) => {
   console.log({imageUploadedToCloudinary})
 
   try {
+    console.log("dentro del try del patch")
     const movie = await prisma.movie.findUnique({
       where: {
         id: movieID,
@@ -143,6 +144,8 @@ export const updateMovie = async (req: Request, res: Response) => {
       },
     });
 
+    console.log({movie})
+
     if (!movie) {
       return res.status(404).send({
         message: "Movie not found",
@@ -151,6 +154,7 @@ export const updateMovie = async (req: Request, res: Response) => {
 
 
     const updatedMovie = await prisma.$transaction(async (prisma) => {
+      console.log("dentro del transaction del patch")
       const updatedMovie = await prisma.movie.update({
         where: {
           id: movieID,
@@ -162,9 +166,10 @@ export const updateMovie = async (req: Request, res: Response) => {
           sinopsis
         },
       });
-
+      console.log({updatedMovie})
       if (genre && genre.length > 0) {
-        const genreArray = JSON.parse(genre);
+        const genreArray = genre.split(',').map(Number);
+        console.log({genreArray})
         await prisma.genreOnMovies.deleteMany({
           where: {
             movieID: movieID,
@@ -172,7 +177,7 @@ export const updateMovie = async (req: Request, res: Response) => {
         });
 
         const createGenre = genreArray.map((genreID: number) => ({
-          movieID: movieID,
+          movieID: movie.id,
           genreID: genreID,
         }));
 
@@ -183,7 +188,7 @@ export const updateMovie = async (req: Request, res: Response) => {
 
       return prisma.movie.findUnique({
         where: {
-          id: movieID,
+          id: movie.id,
         },
         include: {
           genre: true,

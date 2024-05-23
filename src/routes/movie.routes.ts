@@ -19,13 +19,17 @@ getAllMovies);
 
 movieRoutes.get("/:movieID", getMovie)
 
-movieRoutes.post("/:userID", 
-// checkJwtMiddleware, 
-multerCloudinaryConnect.single("image"), 
+movieRoutes.post("/:userID",
+checkJwtMiddleware,
+multerCloudinaryConnect.single("image"),
 createMovie);
 
-movieRoutes.patch("/:movieID", multerCloudinaryConnect.single("image"), updateMovie);
+movieRoutes.patch("/:movieID",
+checkJwtMiddleware,
+multerCloudinaryConnect.single("image"), updateMovie);
 
-movieRoutes.delete("/:movieID", deleteMovie);
+movieRoutes.delete("/:movieID",
+checkJwtMiddleware,
+deleteMovie);
 
 export default movieRoutes;
