@@ -8,14 +8,10 @@ export function getPublicId(url: any) {
 }
 
 export async function uploadImageToCloudinary(image: any) {
-	console.log("entro en uploadImageToCloudinary");
-	console.log({image})
 	const match = image.match(/\/([^\/]+\.jpg)$/)
 	const filename = match[1]
-	console.log({filename})
 
 	const fileNameWithoutExtension = filename?.split(".")[0];
-	console.log({ fileNameWithoutExtension });
 
 	const uploadImageToCloudinary = await cloudinary.uploader.upload(image, {
 		folder: "movies",
@@ -34,7 +30,6 @@ export async function deleteImageFromCloudinary(publicId: any) {
 		publicId
 	);
 	try {
-		console.log({destroyImageAtCloudinary})
 		if (destroyImageAtCloudinary.result === "not found") {
 			return `The image wasn't found in cloudinary`;
 		}

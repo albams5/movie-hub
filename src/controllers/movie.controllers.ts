@@ -41,15 +41,11 @@ export const getMovie = async (req: Request, res: Response) => {
 };
 
 export const createMovie = async (req: Request, res: Response) => {
-  console.log("dentro de create movie")
   let { name, score, genre, sinopsis } = req.body;
-  console.log(name, score, genre, sinopsis)
-  console.log(req.file)
   const scoreToNumber = parseInt(score);
   score = scoreToNumber;
   const userID = parseInt(req.params.userID);
   const image = req.file?.path;
-  console.log("este es el import", { image });
 
   if (!name || !image || !score || !genre || !sinopsis) {
     return res.status(400).send({
@@ -66,10 +62,7 @@ export const createMovie = async (req: Request, res: Response) => {
   const imageUploadedToCloudinary = await uploadImageToCloudinary(image);
 
   try {
-    console.log("dentro del try")
     const newMovie = await prisma.$transaction(async (prisma) => {
-      console.log("dentro de transaction");
-      console.log({ name, image, score, genre, userID, sinopsis });
       const movie = await prisma.movie.create({
         data: {
           name,
@@ -79,17 +72,13 @@ export const createMovie = async (req: Request, res: Response) => {
           sinopsis
         },
       });
-      console.log({ movie });
 
       if (genre && genre.length) {
-        console.log("dentro del if del genre")
         const genreArray = genre.split(',').map(Number);
-        console.log({ genreArray });
         const createGenre = genreArray.map((genreID: number) => ({
           movieID: movie.id,
           genreID: genreID,
         }));
-        console.log({ createGenre });
         await prisma.genreOnMovies.createMany({
           data: createGenre,
         });
@@ -103,7 +92,6 @@ export const createMovie = async (req: Request, res: Response) => {
         },
       });
     });
-    console.log({ newMovie });
     res.status(201).send({
       msg: "Movie create successfully",
       data: newMovie,
@@ -115,14 +103,11 @@ export const createMovie = async (req: Request, res: Response) => {
 
 export const updateMovie = async (req: Request, res: Response) => {
   let { name, score, genre, sinopsis } = req.body;
-  console.log(name, score, genre, sinopsis)
   const scoreToNumber = parseInt(score);
   score = scoreToNumber;
 
   const image = req.file?.path;
-  // const image = imageWithoutString?.toString();
   const movieID = parseInt(req.params.movieID);
-  console.log(image)
 
   if (!movieID) {
     return res.status(400).send({
@@ -131,10 +116,8 @@ export const updateMovie = async (req: Request, res: Response) => {
   }
 
   const imageUploadedToCloudinary = await uploadImageToCloudinary(image);
-  console.log({imageUploadedToCloudinary})
 
   try {
-    console.log("dentro del try del patch")
     const movie = await prisma.movie.findUnique({
       where: {
         id: movieID,
@@ -144,7 +127,6 @@ export const updateMovie = async (req: Request, res: Response) => {
       },
     });
 
-    console.log({movie})
 
     if (!movie) {
       return res.status(404).send({
@@ -154,7 +136,6 @@ export const updateMovie = async (req: Request, res: Response) => {
 
 
     const updatedMovie = await prisma.$transaction(async (prisma) => {
-      console.log("dentro del transaction del patch")
       const updatedMovie = await prisma.movie.update({
         where: {
           id: movieID,
@@ -166,10 +147,8 @@ export const updateMovie = async (req: Request, res: Response) => {
           sinopsis
         },
       });
-      console.log({updatedMovie})
       if (genre && genre.length > 0) {
         const genreArray = genre.split(',').map(Number);
-        console.log({genreArray})
         await prisma.genreOnMovies.deleteMany({
           where: {
             movieID: movieID,
@@ -229,7 +208,6 @@ export const deleteMovie = async (req: Request, res: Response) => {
       });
     }
 
-    console.log("el public id", getPublicId(movie.image))
 
   await deleteImageFromCloudinary(getPublicId(movie?.image))
 

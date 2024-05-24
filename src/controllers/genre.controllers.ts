@@ -16,7 +16,6 @@ export const getAllGenres = async (req: Request, res: Response) => {
 
 export const getGenre = async (req: Request, res: Response) => {
   const genreID = parseInt(req.params.genreID);
-  console.log({genreID})
   try {
     const uniqueGenre = await prisma.genre.findUnique({
       where: {
