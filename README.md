@@ -10,7 +10,7 @@
 
 ## 💻About the project
 
-Welcome to Mobee project, an application to keep track of the movies you are watching.You are able to perform CRUD(Create, Read, Upadte, Delete) opreations on the different collections.
+Welcome to Mobee project, an application to keep track of the movies you are watching.You are able to perform CRUD(Create, Read, Upadte, Delete) operations on the different collections.
  This project is a REST API built with Node.js and uses Express as the web framework, along with Mongoose, Prisma, Morgan, and Helmet for various functionalities.
 
 
