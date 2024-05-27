@@ -24,8 +24,8 @@ app.use(urlencoded({ extended: true }));
 app.use(morgan('tiny'))
 
 app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
+    // origin: 'http://localhost:3000',
+    // credentials: true
   }));
 
 
