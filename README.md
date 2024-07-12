@@ -43,6 +43,15 @@ The Mobee application handles three main collections or entities:
 3. **Genres**: Represents the genres of the movies.
 
 
+## 🖇️Related
+
+Here you can find the frontend of this app.
+
+https://github.com/albams5/mobee-nextjs
+
+
+
+
 ## 📝Daily records
     - Day 1: MongoDB + Mongoose. Configuring with dotenv, creating the connection in db.ts, starting the server in index.ts, connecting the routes, creating users and movies models, and the controllers.
 
@@ -58,6 +67,27 @@ The Mobee application handles three main collections or entities:
     
     - Day 7-8-9: Cloudinary implementation
 
+## 🧑‍💻Installation
 
+To run this application locally, follow these steps:
+
+```bash
+1. Clone the repository:
+
+git clone  https://github.com/albams5/movie-hub.git
+
+2. Navigate to the project directory:
+
+cd mobee-nextjs
+
+3. Install dependencies:
+
+npm install
+
+To start the development server, run:
+
+npm run dev
+
+```
 
 #react #express #typescript #postgres #prisma #cloudinary #backend
