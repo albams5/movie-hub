@@ -21,7 +21,7 @@ The project has three main branches:
 - **mongoose**: Uses Mongoose to connect with MongoDB.
 - **prisma**: Uses Prisma to connect with MongoDB.
 - **prisma_with_postgres**: Uses Prisma to connect with PostgreSQL.
-
+- **next-backend**: Ready to connect with the NextJS frontend project.
 You can switch between branches to see how the connection with the database is implemented in each of them.
 
 ## ⚙️Technologies Used
@@ -40,6 +40,12 @@ The Mobee application handles three main collections or entities:
 1. **Users**: Represents the users of the application.
 2. **Movies**: Represents the movies uploaded by users.
 3. **Genres**: Represents the genres of the movies.
+
+## 🖇️Related
+
+Here you can find the frontend of this app.
+
+https://github.com/albams5/mobee-nextjs
 
 
 ## 📝Daily records
