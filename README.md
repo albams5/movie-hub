@@ -21,7 +21,7 @@ The project has three main branches:
 - **mongoose**: Uses Mongoose to connect with MongoDB.
 - **prisma**: Uses Prisma to connect with MongoDB.
 - **prisma_with_postgres**: Uses Prisma to connect with PostgreSQL.
-
+- **next-backend**: Ready to connect with the NextJS frontend project.
 You can switch between branches to see how the connection with the database is implemented in each of them.
 
 ## ⚙️Technologies Used
